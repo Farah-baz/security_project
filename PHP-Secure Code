@@ -1,0 +1,26 @@
+<?php
+session_start();
+$conn = mysqli_connect("localhost", "root", "", "project");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // استخدام Prepared Statements للحماية من SQL Injection
+    $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ? AND password = ?");
+    $stmt->bind_param("ss", $username, $password); 
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $_SESSION['admin'] = true;
+        header("Location: welcome.php"); // بعد الدخول الصحيح يوديه على صفحة الإدارة
+        exit();
+    } else {
+        echo "<div style='font-family:Segoe UI;padding:30px;text-align:center;color:#c00;font-size:20px;'> Invalid credentials!</div>";
+    }
+
+    $stmt->close();
+    mysqli_close($conn);
+}
+?>
