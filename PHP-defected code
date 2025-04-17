@@ -1,0 +1,26 @@
+<?php
+session_start();
+$conn = mysqli_connect("localhost", "root", "", "project");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // كود فيه SQL Injection
+    $sql = "SELECT * FROM admin WHERE username = '$username' AND password = '$password'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $_SESSION['admin'] = true;
+        header("Location: welcome.php");
+        exit();
+    } else {
+        echo "<div style='font-family:Segoe UI;padding:30px;text-align:center;color:#c00;font-size:20px;'> Invalid credentials!</div>";
+    }
+} else {
+    header("Location: login.html");
+    exit();
+}
+
+mysqli_close($conn);
+?>
