@@ -25,6 +25,7 @@
 <body>
   <div class="login-card">
     <h2 class="text-center mb-4">Admin Login</h2>
+    <!-- the code now is secure to run the insecure code chane  login_secure.php to login.php line 29 -->
     <form action="login_secure.php" method="post">
       <div class="mb-3">
         <input type="text" name="username" class="form-control" placeholder="Username" required>
